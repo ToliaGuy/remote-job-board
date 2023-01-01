@@ -13,6 +13,12 @@ def scrape_himalayas():
             break
         else:
             for raw_job in raw_jobs:
-                raw_jobs.append(raw_job)
+                jobs.append({
+                    "title": raw_job["title"],
+                    "company": raw_job["companyName"],
+                    "link": raw_job["applicationLink"],
+                    "description": raw_job["description"],
+                    "source": "himalayas"
+                })
         offset = offset + limit
     return jobs
