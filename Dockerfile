@@ -16,5 +16,5 @@ ENV PATH="/build/.venv/bin:$PATH"
 WORKDIR /usr/src/app
 ADD . /usr/src/app
 # B flag is so the __pycache__ is not created, because there is no point of having cache when you actively develop module
-ENTRYPOINT ["python", "-B", "main.py"]
+#ENTRYPOINT ["python", "-B", "main.py"]
 #ENTRYPOINT ["celery", "-A", "scrape", "worker", "-l", "info"]
