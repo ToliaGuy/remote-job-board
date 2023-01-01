@@ -1,0 +1,49 @@
+version: '3'
+services:
+  redis:
+    image: "redis:7.0"
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - localnet
+    restart: on-failure
+
+  celery_beat:
+    container_name: scraper_scheduler
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      BROKER_URL: "redis://redis:6379/0"
+    depends_on:
+      - redis
+    entrypoint: celery
+    networks:
+      - localnet
+    volumes:
+      - .:/usr/src/app
+    command: "-A scrape beat --loglevel=INFO"
+
+  scraper_worker:
+    container_name: scraper_worker
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      BROKER_URL: "redis://redis:6379/0"
+    entrypoint: celery
+    depends_on:
+      - redis
+    networks:
+      - localnet
+    volumes:
+      - .:/usr/src/app
+    command: "-A scrape worker --loglevel=INFO"
+
+networks:
+  localnet:
+volumes:
+  redis_data:
