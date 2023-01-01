@@ -1,0 +1,18 @@
+import requests
+
+
+def scrape_himalayas():
+    jobs = []
+    offset = 0
+    limit = 200
+    while True:
+        response = requests.get(f"https://himalayas.app/jobs/api?limit={limit}&offset={offset}")
+        json_data = response.json()
+        raw_jobs = json_data["jobs"]
+        if len(raw_jobs) == 0:
+            break
+        else:
+            for raw_job in raw_jobs:
+                raw_jobs.append(raw_job)
+        offset = offset + limit
+    return jobs
