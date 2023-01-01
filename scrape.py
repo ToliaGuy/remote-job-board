@@ -1,7 +1,7 @@
 import os
 from celery import Celery
 from celery.schedules import crontab
-from scraper.main import run_scraper
+from scraper.main import run_scraper, upload_jobs
 
 app = Celery(__name__, broker=os.environ['BROKER_URL'])
 
@@ -13,4 +13,6 @@ def setup_periodic_tasks(sender, **kwargs):
 
 @app.task
 def scrape():
-    return run_scraper()
+    jobs = run_scraper()
+    upload_jobs(jobs)
+    return
