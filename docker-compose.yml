@@ -1,5 +1,18 @@
 version: '3'
 services:
+  djangoapp:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.django
+    volumes:
+      - .:/opt/services/djangoapp/src
+      - static_volume:/opt/services/djangoapp/static  # <-- bind the static volume
+      - media_volume:/opt/services/djangoapp/media  # <-- bind the media volume
+    networks:
+      - localnet
+    ports:
+      - "8000:8000"
+
   redis:
     image: "redis:7.0"
     container_name: redis
@@ -47,3 +60,5 @@ networks:
   localnet:
 volumes:
   redis_data:
+  static_volume:
+  media_volume:
