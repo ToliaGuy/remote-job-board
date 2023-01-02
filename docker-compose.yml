@@ -13,6 +13,15 @@ services:
     ports:
       - "8000:8000"
 
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD=trust"
+    networks:
+      - localnet
+
   redis:
     image: "redis:7.0"
     container_name: redis
@@ -62,3 +71,4 @@ volumes:
   redis_data:
   static_volume:
   media_volume:
+  postgres_data:
