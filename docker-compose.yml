@@ -5,13 +5,14 @@ services:
       context: .
       dockerfile: ./Dockerfile.django
     volumes:
-      - .:/opt/services/djangoapp/src
+      - .:/code
       #- static_volume:/opt/services/djangoapp/static  # <-- bind the static volume
       #- media_volume:/opt/services/djangoapp/media  # <-- bind the media volume
     networks:
       - localnet
     ports:
       - "8000:8000"
+    command: python remote_job_board/manage.py runserver 0.0.0.0:8000
 
   db:
     image: postgres:13
