@@ -8,6 +8,7 @@ django = "*"
 celery = "*"
 redis = "*"
 gunicorn = "*"
+requests = "*"
 
 [dev-packages]
 
