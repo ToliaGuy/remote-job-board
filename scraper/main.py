@@ -1,41 +1,8 @@
 import requests
-import psycopg2
 
 
-def connect():
-    """ Connect to the PostgreSQL database server """
-    conn = None
-    try:
-        # connect to the PostgreSQL server
-        print('Connecting to the PostgreSQL database...')
-        conn = psycopg2.connect(host="db", database="postgres", user="postgres", password="postgres")
-		
-        # create a cursor
-        cur = conn.cursor()
-        
-	# execute a statement
-        print('PostgreSQL database version:')
-        cur.execute('SELECT version()')
-
-        # display the PostgreSQL database server version
-        db_version = cur.fetchone()
-        print(db_version)
-
-        #cur.execute("SELECT * FROM jobs_jobpost")
-        #print(cur.fetchall())
-       
-	# close the communication with the PostgreSQL
-        cur.close()
-    except (Exception, psycopg2.DatabaseError) as error:
-        print(error)
-    finally:
-        if conn is not None:
-            conn.close()
-            print('Database connection closed.')
 
 def scrape_himalayas():
-    print("scraping himalayas")
-    return []
     try:
         jobs = []
         offset = 0
@@ -48,13 +15,15 @@ def scrape_himalayas():
                 break
             else:
                 for raw_job in raw_jobs:
-                    jobs.append({
-                        "title": raw_job["title"],
-                        "company": raw_job["companyName"],
-                        "link": raw_job["applicationLink"],
-                        "description": raw_job["description"],
-                        "source": "himalayas"
-                    })
+                    # check if data exists
+                    if raw_job["title"] and raw_job["companyName"] and raw_job["applicationLink"] and raw_job["description"]:
+                        jobs.append({
+                            "title": raw_job["title"],
+                            "company": raw_job["companyName"],
+                            "link": raw_job["applicationLink"],
+                            "description": raw_job["description"],
+                            "source": "himalayas"
+                        })
             offset = offset + limit
         return jobs
     except Exception as e:
@@ -62,8 +31,6 @@ def scrape_himalayas():
     
 
 def scrape_remote_ok():
-    print("scraping remote ok")
-    return []
     try:
         url = 'https://remoteok.com/api'
         response = requests.get(url)
@@ -71,13 +38,15 @@ def scrape_remote_ok():
         raw_jobs = jobs_json[1:]
         jobs = []
         for job in raw_jobs:
-            jobs.append({
-                'title': job['position'],
-                'company': job['company'],
-                'link': job['apply_url'],
-                'description': job['description'],
-                'source': 'remoteok'
-            })
+            # check if data exists
+            if job["position"] and job["company"] and job["apply_url"] and job["description"]:
+                jobs.append({
+                    'title': job['position'],
+                    'company': job['company'],
+                    'link': job['apply_url'],
+                    'description': job['description'],
+                    'source': 'remoteok'
+                })
         return jobs
     except Exception as e:
         print(e)
@@ -87,37 +56,38 @@ def scrape_remote_ok():
 
 def scrape_remotive():
     print("scraping remotive")
-    return []
+    #return []
     try:
         response = requests.get("https://remotive.com/api/remote-jobs")
         json_data = response.json()
         jobs = []
         for job in json_data["jobs"]:
-            jobs.append({
-                "title": job["title"],
-                "company": job["company_name"],
-                "link": job["url"],
-                "description": job["description"],
-                "source": "remotive"
-            })
+            # check if data exists
+            if job["title"] and job["company_name"] and job["url"] and job["description"]:
+                jobs.append({
+                    "title": job["title"],
+                    "company": job["company_name"],
+                    "link": job["url"],
+                    "description": job["description"],
+                    "source": "remotive"
+                })
         return jobs
     except Exception as e:
         print(e)
 
 
-
-
-def upload_jobs(jobs, source):
+def upload_data(jobs, source):
+    # upload data all at once to api using requests
     try:
-        if len(jobs) != 0:
-            data = {"jobs": jobs, "source": source}
-            requests.post("djangoapp:8000/jobs/api", json=data)
+        # delete all jobs from source
+        del_res = requests.delete(f"http://djangoapp:8000/jobs/api/", json={"source": source})
+        for job in jobs:
+            response = requests.post("http://djangoapp:8000/jobs/api/", json=job)
     except Exception as e:
         print(e)
 
 
 def run_scraper():
-    connect()
-    upload_jobs(scrape_remote_ok(), "remoteok")
-    upload_jobs(scrape_remotive(), "remotive")
-    upload_jobs(scrape_himalayas(), "himalayas")
+    upload_data(scrape_remote_ok(), "remoteok")
+    upload_data(scrape_remotive(), "remotive")
+    upload_data(scrape_himalayas(), "himalayas")
