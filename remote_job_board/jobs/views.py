@@ -8,7 +8,7 @@ from django.core import serializers
 
 class JobAPI(TemplateView):
     def get(self, request, *args, **kwargs):
-        SomeModel_json = serializers.serialize("json", JobPost.objects.all())
+        SomeModel_json = serializers.serialize("json", JobPost.objects.all()[:10])
         data = {"jobs": SomeModel_json}
         return JsonResponse(data)
 
@@ -27,4 +27,6 @@ class JobAPI(TemplateView):
 
 
 def listing(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    jobs = JobPost.objects.all()[:10]
+    context = {"object_list": jobs}
+    return render(request, "index.html", context)

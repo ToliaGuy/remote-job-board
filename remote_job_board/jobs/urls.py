@@ -2,7 +2,7 @@ from django.urls import path
 from django.urls.conf import include
 from jobs.views import JobAPI
 from django.views.decorators.csrf import csrf_exempt
-import views
+from . import views
 
 urlpatterns = [
     path('', views.listing, name='home'),
