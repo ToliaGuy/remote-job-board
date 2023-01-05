@@ -24,3 +24,7 @@ class JobAPI(TemplateView):
         source = data["source"]
         JobPost.objects.filter(source=source).delete()
         return HttpResponse("ok")
+
+
+def listing(request):
+    return HttpResponse("Hello, world. You're at the polls index.")
