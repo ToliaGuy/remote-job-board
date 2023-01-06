@@ -2,6 +2,8 @@ from django.shortcuts import render
 from django.views import generic
 from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse
+from django.core.paginator import Paginator
+from django.db.models import Q
 from .models import JobPost
 import json
 from django.core import serializers
@@ -28,8 +30,25 @@ class JobAPI(TemplateView):
 
 
 def listing(request):
-    jobs = JobPost.objects.all()[:10]
-    context = {"object_list": jobs}
+    context = {}
+    page = request.GET.get('page')
+    search = request.GET.get('search')
+    if page:
+        page = request.GET["page"]
+    else:
+        page = 1
+    
+    if search:
+        job_posts = JobPost.objects.filter(
+              Q(title__icontains=search) | Q(description__icontains=search) | Q(company__icontains=search)
+        )
+    else:
+        job_posts = JobPost.objects.all()
+    paginator = Paginator(job_posts, per_page=10)
+    page_object = paginator.get_page(page)
+    context = {"object_list": page_object}
+    if search:
+        context["search"] = search
     return render(request, "index.html", context)
 
 def contact(request):
