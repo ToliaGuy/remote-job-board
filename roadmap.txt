@@ -1,4 +1,0 @@
-Pull all relevant data from APIs
-Normalize the data from different sources
-Upload data into our system
-Create UI around the data
