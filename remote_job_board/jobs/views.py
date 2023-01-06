@@ -35,6 +35,9 @@ def listing(request):
 def contact(request):
     return render(request, "contact.html")
 
+def policies(request):
+    return render(request, "policies.html")
+
 
 class JobPostDetail(generic.DetailView):
     model = JobPost

@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path('', views.listing, name='home'),
     path('contact/', views.contact, name='contact'),
+    path('policies/', views.policies, name='policies'),
     path('api/', csrf_exempt(JobAPI.as_view())),
     path('<slug:pk>/', views.JobPostDetail.as_view(), name='job_post_detail'),
 ]
