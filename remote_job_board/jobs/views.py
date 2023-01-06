@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views import generic
 from django.views.generic import TemplateView
 from django.http import HttpResponse, JsonResponse
 from .models import JobPost
@@ -30,3 +31,8 @@ def listing(request):
     jobs = JobPost.objects.all()[:10]
     context = {"object_list": jobs}
     return render(request, "index.html", context)
+
+
+class JobPostDetail(generic.DetailView):
+    model = JobPost
+    template_name = 'job_post_detail.html'
