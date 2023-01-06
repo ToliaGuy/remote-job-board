@@ -32,6 +32,9 @@ def listing(request):
     context = {"object_list": jobs}
     return render(request, "index.html", context)
 
+def contact(request):
+    return render(request, "contact.html")
+
 
 class JobPostDetail(generic.DetailView):
     model = JobPost
