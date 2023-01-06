@@ -52,7 +52,7 @@
             <div class="card mb-4">
                 <div class="card-body">
                     <h2 class="card-title">{{ post.title }}</h2>
-                    <a href="" class="btn btn-primary float-right" target="_blank">Learn More &rarr;</a>
+                    <a href="{{ post.pk }}" class="btn btn-primary float-right" target="_blank">Learn More &rarr;</a>
                     <p class="card-text text-muted h6">Company: <b>{{ post.company }}</b></p>
                     <p class="card-text"><small class="text-muted">Updated at: <b>{{ post.created_at|date:'Y-m-d' }}</b></small></p>
                     <!--<p class="card-text">{{post.description|slice:":200"|safe }}</p>-->
