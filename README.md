@@ -18,6 +18,6 @@ This projects uses [Celery beat scheduler](https://docs.celeryq.dev/en/stable/us
 - [x] Create a Django app
 - [x] Create a basic UI
 - [x] Dockerize everything
-- [] Create an AUTH system for API
-- [] Find a better way for updating the data
-- [] Add more info e.g. salary range, experience level, job type
+- [ ] Create an AUTH system for API
+- [ ] Find a better way for updating the data
+- [ ] Add more info e.g. salary range, experience level, job type
