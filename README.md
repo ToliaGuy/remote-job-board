@@ -3,14 +3,15 @@
 Remote work is becoming more and more common way of working, so I decided to create my own job board for remote workers. 
 
 ## How this project works?
-This projects uses [Celery scheduler](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html) and [Celery worker](https://docs.celeryq.dev/en/stable/userguide/workers.html) to pull data from public remote job board APIs ([RemoteOk](https://remoteok.com/), [Remotive](https://remotive.com/), [Himalayas](https://himalayas.app/)) every 6 hours and updates, the data in our database, through an API and displays all the data with [Django](https://www.djangoproject.com/).
+This projects uses [Celery scheduler](https://docs.celeryq.dev/en/stable/userguide/periodic-tasks.html) and [Celery worker](https://docs.celeryq.dev/en/stable/userguide/workers.html) to pull data from public remote job board APIs ([RemoteOk](https://remoteok.com/), [Remotive](https://remotive.com/), [Himalayas](https://himalayas.app/)) every 6 hours and updates, the data in our database and displays all the data with [Django](https://www.djangoproject.com/).
 
-## Build With
+## Built With
 * [Docker](https://docs.docker.com/)
 * [Docker Compose](https://docs.docker.com/compose/)
 * [Celery](https://docs.celeryq.dev/en/stable/)
 * [Django](https://www.djangoproject.com/)
 * [PostgreSQL](https://www.postgresql.org/)
+* [Bootstrap](https://getbootstrap.com/)
 
 ## Roadmap
 - [x] Pull data from APIs
